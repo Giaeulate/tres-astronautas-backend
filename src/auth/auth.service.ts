@@ -34,19 +34,30 @@ export class AuthService {
   }
 
   async register(data: RegisterAuthDto) {
-    if (data.token != process.env.AUTH_TOKEN) {
-      return new ErrorMessageException(
-        'Token inválido',
-        HttpStatus.NOT_ACCEPTABLE,
-      );
+    // if (data.token != process.env.AUTH_TOKEN) {
+    //   return new ErrorMessageException(
+    //     'Token inválido',
+    //     HttpStatus.NOT_ACCEPTABLE,
+    //   );
+    // }
+
+    const hasEmail = await this.authModel.findOne({ email: data.email });
+    if (hasEmail) {
+      throw new HttpException('Error, el correo ya fue registrado', 403);
     }
+
     const { password } = data;
-    // const hashPassword = await hash(password, process.env.SECRET_KEY);
     const hashPassword = await hash(password, 10);
     data = { ...data, password: hashPassword };
     try {
       const newObj = new this.authModel(data);
-      return await newObj.save();
+      await newObj.save();
+      const resp = { ...newObj };
+      delete resp['_doc']['password'];
+      const payload = { id: newObj._id, email: newObj.email };
+      const token = this.jwtService.sign(payload);
+      resp['_doc']['token'] = token;
+      return resp['_doc'];
     } catch (error) {
       return new ErrorMessageException(
         `${error.message}`,

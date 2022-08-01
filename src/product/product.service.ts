@@ -41,7 +41,7 @@ export class ProductService {
   async create(body: ProductDto, data: any, file: any = null) {
     try {
       if (file) {
-        body["image"] = file.filename;
+        body['image'] = file.filename;
       }
       const newObj = new this.productModel({ ...body, owner: data.id });
       return await newObj.save();
@@ -53,7 +53,7 @@ export class ProductService {
   async update(id: string, body: ProductDto, data: any) {
     await this.finOneByUser(id, data);
     try {
-      await this.productModel.updateOne({ _id: id, ...body });
+      await this.productModel.updateOne({ _id: id }, { ...body });
       return {
         status: true,
         message: 'Datos actualizados correctamente',

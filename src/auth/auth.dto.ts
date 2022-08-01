@@ -18,9 +18,9 @@ export class LoginAuthDto {
 }
 
 export class RegisterAuthDto {
-  @ApiProperty({ type: String, required: true, default: '' })
-  @IsNotEmpty({ message: 'Debe agregar el campo token' })
-  token: string;
+  // @ApiProperty({ type: String, required: true, default: '' })
+  // @IsNotEmpty({ message: 'Debe agregar el campo token' })
+  // token: string;
 
   @ApiProperty({ type: String, required: true, default: '' })
   @IsNotEmpty({ message: 'Debe agregar el campo email' })
