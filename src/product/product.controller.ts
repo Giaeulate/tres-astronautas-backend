@@ -24,7 +24,7 @@ import { renameImage, fileFilterImage } from 'src/shared/image-helper';
 
 @ApiBearerAuth('Bearer')
 @UseGuards(JwtAuthGuard)
-@ApiTags('products')
+@ApiTags('Products')
 @Controller('v1/product')
 export class ProductController {
   constructor(
